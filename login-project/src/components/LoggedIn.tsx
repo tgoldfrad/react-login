@@ -1,8 +1,11 @@
 import { useContext, useRef, useState } from "react"
-import { FunctionContext, style, UserContext, UserId } from "./HomePage"
+import {  style, UserId } from "./HomePage"
 import { Avatar, Box, Button, Modal, Stack, TextField } from "@mui/material"
 import { deepOrange, deepPurple } from "@mui/material/colors"
 import axios from "axios"
+import { FunctionContext, UserContext } from "./start"
+
+
 
 const LoggedIn = () => {
     const currentUser = useContext(UserContext)
@@ -24,7 +27,8 @@ const LoggedIn = () => {
 
     return(
         <>
-        <h1>detailes user: {currentUser.firstname} {currentUser.lastname} phone: {currentUser.phone}</h1>
+        <h1>detailes user: {currentUser.firstname} {currentUser.lastname} </h1>
+        <h2>phone: {currentUser.phone}</h2>
         <h2>{currentUser.firstname} {currentUser.lastname}</h2>
       <Avatar sx={{ bgcolor: deepOrange[500] }}>{currentUser.firstname?.charAt(0)}</Avatar>
       <Button onClick={()=>{setOpenUpdate(!openUpdate)}} >update</Button>
@@ -77,12 +81,12 @@ const LoggedIn = () => {
                         }
                       
                     }}>
-                    <TextField label='firstName' inputRef={firstNameRef}/>
-                    <TextField label='lastName' inputRef={lastNameRef}/>
-                    <TextField label='password' inputRef={passwordRef}/>
+                    <TextField label='firstName' inputRef={firstNameRef} value={currentUser.firstname}/>
+                    <TextField label='lastName' inputRef={lastNameRef} value={currentUser.lastname}/>
+                    <TextField label='password' inputRef={passwordRef} value={currentUser.password}/>
                     <TextField label='phone' inputRef={phoneRef}/>
                     <TextField label='address' inputRef={addressRef}/>
-                    <TextField label='email' inputRef={emailRef}/>
+                    <TextField label='email' inputRef={emailRef} value={currentUser.email}/>
                     <Button type="submit" >save</Button>
                     </form>
                 </Box>

@@ -1,4 +1,4 @@
-import { createContext, useReducer, useRef, useState } from "react"
+import { createContext, useContext, useReducer, useRef, useState } from "react"
 import {
     Button,
     Grid2 as Grid,
@@ -10,6 +10,7 @@ import {
 import LoggedIn from "./LoggedIn";
 import userReducer, { User } from "../UserModel";
 import axios from "axios";
+import { FunctionContext, UserContext } from "./start";
 
 
 export const style = {
@@ -24,8 +25,8 @@ export const style = {
     p: 4,
 };
 
-export const FunctionContext = createContext<Function>(() => { });
-export const UserContext = createContext<User>({ firstname: 'fff', lastname: "dgd", password: "546456" });
+// export const FunctionContext = createContext<Function>(() => { });
+// export const UserContext = createContext<User>({ firstname: 'fff', lastname: "dgd", password: "546456" });
 export const UserId = createContext<number|undefined>(0);
 
 const HomePage = () => {
@@ -33,8 +34,10 @@ const HomePage = () => {
     const [open, setOpen] = useState(false)
     const [isRegister, setisRegister] = useState('')
 
-    const [currentUser, currentUserDispatch] = useReducer(userReducer, {} as User)
-
+    // const [currentUser, currentUserDispatch] = useReducer(userReducer, {} as User)
+    const currentUser = useContext(UserContext)
+    const func = useContext(FunctionContext)
+    
     const firstNameRef = useRef<HTMLInputElement>(null)
     const lastNameRef = useRef<HTMLInputElement>(null)
     const passwordRef = useRef<HTMLInputElement>(null)
@@ -66,7 +69,7 @@ const HomePage = () => {
                             <Button color="primary" variant="contained" onClick={() => {setOpen(!open);setisRegister('/login')}}>Login</Button>
                             <Button color="primary" variant="contained" onClick={() => {setOpen(!open);setisRegister('/register')}}>register</Button>
                         </div>
-                            :<UserId.Provider value={userID}> <FunctionContext.Provider value={currentUserDispatch}> <UserContext.Provider value={currentUser}><LoggedIn /></UserContext.Provider></FunctionContext.Provider></UserId.Provider>}
+                            :<UserId.Provider value={userID}> <LoggedIn /></UserId.Provider>}
                     </Grid>
                 </Grid>
                 <Modal open={open} onClose={() => setOpen(false)}>
@@ -76,7 +79,7 @@ const HomePage = () => {
                             setOpen(false); setIsLogin(true);
                       
                   
-                            currentUserDispatch({
+                            func({
                                 type: 'CREATE',
                                 data: {
                                     firstname: firstNameRef.current?.value || '',
